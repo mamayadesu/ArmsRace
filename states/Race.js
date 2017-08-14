@@ -7,14 +7,18 @@ class Race extends StateBase {
     constructor(StateHandler) {
         super();
         this.StateHandler = StateHandler;
+        this.main = this.StateHandler.main;
         this.scores = {};
+        
+        var locations = this.main.GetLocations();
         
         var players = jcmp.players;
         var player;
         for(var k in players) {
             player = players[k];
-            
-            jcmp.events.CallRemote("armsrace/state", player, "Race", this.StateHandler.main.GetLocations.GetLocation().time);
+            player.position = locations.GetRandomRespawnPosition(); // respawn players after changing location
+            // To Do : reload player weapons
+            jcmp.events.CallRemote("armsrace/state", player, "Race", locations.GetLocation().time);
         }
     }
     

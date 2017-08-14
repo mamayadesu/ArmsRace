@@ -75,7 +75,7 @@ class AR {
         player.GiveWeapon(weapon.modelHash, weapon.magazineAmmo + weapon.reserveAmmo, true);
         for(var k in player.weapons) {
             if(player.weapons[k].modelHash != weapon.modelHash) {
-                player.RemoveWeapon(player.weapons[k].slotIndex);
+                player.RemoveWeapon(player.weapons[k].modelHash);
                 continue;
             }
             player.weapons[k].magazineAmmo = weapon.magazineAmmo;
