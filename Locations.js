@@ -1,8 +1,8 @@
 'use strict';
 
 var log = require("./log.js");
-var noLocations = require("./states/noLocations.js");
-var stateHandler = require("./states/stateHandler.js");
+var NoLocations = require("./states/NoLocations.js");
+var StateHandler = require("./states/StateHandler.js");
 
 module.exports = class Locations {
     constructor(main) {
@@ -13,7 +13,7 @@ module.exports = class Locations {
         if(this.GetAllLocations().length == 0) {
             setTimeout(function() {
                 var sh = main.GetStateHandler();
-                sh.SetState(new noLocations(sh));
+                sh.SetState(new NoLocations(sh));
             }, 250, main);
             return;
         }
@@ -27,6 +27,17 @@ module.exports = class Locations {
     
     GetLocation() {
         return this.ActiveLocation;
+    }
+    
+    GetRandomRespawnPosition() {
+        var loc = this.GetLocation();
+        var respawn = loc.respawns[AR.rand(0, loc.respawns.length - 1)];
+        return respawn;
+    }
+    
+    GetRandomWeapon() {
+        var loc = this.GetLocation();
+        return loc.weapons[AR.rand(0, loc.weapons.length - 1)];
     }
     
     GetLocationByName(name) {
@@ -64,6 +75,7 @@ module.exports = class Locations {
         var x, y, z;
         var rd = fs.readdirSync(Locations.GetDir());
         var totalKills = 0;
+        var modelHash;
         for(var k in rd) {
             filename = rd[k];
             somethingWrong = false;
@@ -94,6 +106,9 @@ module.exports = class Locations {
             if(typeof location.name != "string" && typeof location.name != "number") {
                 log("Wrong name in "+filename);
                 somethingWrong = true;
+            } else if(typeof location.time != "object" || typeof location.time.minutes != "number" || typeof location.time.seconds != "number") {
+                log("Wrong time data");
+                somethingWrong = true;
             } else if(typeof location.area != "object") {
                 log("Wrong area data");
                 somethingWrong = true;
@@ -104,6 +119,8 @@ module.exports = class Locations {
                 log("Wrong weapons data");
                 somethingWrong = true;
             }
+            
+            location.time = location.time.seconds + (location.time.minutes * 60);
             
             if(somethingWrong) {
                 log("Skipping "+filename+"...");
@@ -198,12 +215,12 @@ module.exports = class Locations {
                     break;
                 }
                 
-                if(typeof weapon.modelHash != "number") {
-                    log("'modelHash' is not number on weapon #"+(k + 1));
+                if(typeof weapon.modelHash != "string") {
+                    log("'modelHash' is not string on weapon #"+(k + 1));
                     somethingWrong = true;
                 }
                 if(typeof weapon.kills != "number") {
-                    log("'kills' is not number on weapon #"+(k + 1));
+                    log("'kills' is not number on weapon #"+(parseInt(k) + 1));
                     somethingWrong = true;
                 }
                 
@@ -216,6 +233,12 @@ module.exports = class Locations {
             if(somethingWrong) {
                 log("Skipping "+filename+"...");
                 continue;
+            }
+            
+            for(let k in location.weapons) {
+                modelHash = parseInt(location.weapons[k].modelHash);
+                
+                location.weapons[k].modelHash = modelHash;
             }
             
             this.locations.push(location);

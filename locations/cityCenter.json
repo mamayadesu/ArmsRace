@@ -1,10 +1,14 @@
 {
     "name": "City center",
+    "time": {
+        "minutes": 12,
+        "seconds": 0
+    },
     "area": {
         "x1": 3708.634,
         "z1": 901.167,
-        "x2": 3313.209,
-        "z2": 1187.151
+        "x2": 3280.549,
+        "z2": 1218.303
     },
     "respawns": [
         {
@@ -76,8 +80,9 @@
     ],
     "weapons": [
         {
-            "modelHash": 4040374394,
-            "hex": "0xf0d3387a",
+            "modelHash": "0xf0d3387a",
+            "magazineAmmo": 16,
+            "reserveAmmo": 120,
             "kills": 1
         }
     ]

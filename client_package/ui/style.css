@@ -1,0 +1,39 @@
+body {
+    font-family: Arial;
+    -webkit-user-select: none;
+}
+
+#state {
+    color: #DDDDDD;
+    right: 25px;
+    bottom: 18px;
+    font-size: 150%;
+    position: absolute;
+    -webkit-user-select: none;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 0.3px black;
+    font-weight: bold;
+}
+
+#outFromArea {
+    top: 20%;
+    left: 31%;
+    position: fixed;
+}
+
+.warning {
+    color: orange;
+    font-size: 250%;
+    text-align: center;
+}
+
+.warningText {
+    color: white;
+    font-size: 150%;
+    text-shadow: black 2px 2px 2px;
+    font-size: 125%;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 0.3px black;
+    font-weight: bold;
+    top: 20%;
+}
